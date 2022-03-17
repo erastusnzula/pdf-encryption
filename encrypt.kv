@@ -1,0 +1,87 @@
+Encrypt:
+#:set font_size dp(24)
+<Encrypt>:
+    password: pwd.text
+    canvas.before:
+        Rectangle:
+            source : 'images/bg1.jpeg'
+            size : self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            size_hint: 1,.2
+            text: 'E N C R Y P T    P D F    F I L E'
+            font_size: font_size
+            font_name: 'fonts/Sackers-Gothic-Std-Light.ttf'
+            background_normal : ""
+            background_color : .7,.7,.9
+
+        BoxLayout:
+            FileBrowser:
+                id: f
+                on_success: root.select_file(self)
+                #on_canceled : root.selection_cancelled(self)
+                select_string: 'Select'
+                #multiselect: True
+                on_submit: root.select_file(self)
+                disabled: root.file_select_disabled
+                filters:  ['*.pdf','']
+
+
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                Button:
+                    size_hint: 1,1
+                    text: root.selected_file
+                    font_size: font_size
+                    font_name: 'fonts/Eurostile.ttf'
+                    background_normal : ""
+                    background_color : .7,.7,.9
+                    disabled : root.display_select_button
+                Button:
+                    size_hint: .2,1
+                    text: root.change_file
+                    font_size: font_size
+                    font_name: 'fonts/Eurostile.ttf'
+                    background_normal : ""
+                    background_color : 0.2,0.5,1
+                    on_press: root.enable_select_file()
+                    disabled : root.change_file_button
+
+            TextInput:
+                id: pwd
+                font_size: font_size
+                font_name: 'fonts/Eurostile.ttf'
+                background_normal: ''
+                background_color: 1,1,1 #.7,.8,.9
+                focus: root.focus_text
+                cursor_color : 0,0,1
+                multiline: False
+                hint_text:'Enter password'
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                #size_hint: 0.5, 0.15
+                password: True
+                disabled: root.password_input_disabled
+                #on_text_validate: root.on_text_validate(self)
+
+            BoxLayout:
+                Button:
+                    #size_hint: 1,.5
+                    text: root.file_encrypt_button
+                    font_size: dp(30)
+                    font_name: 'fonts/Eurostile.ttf'
+                    background_normal: ''
+                    background_color: 0.2,0.5,1
+                    disabled: root.encryption_button_disabled
+                    on_press : root.encrypt_file(self)
+                Button:
+                    #size_hint: .7,1
+                    font_size: font_size
+                    text: "Exit"
+                    font_name: 'fonts/Eurostile.ttf'
+                    on_press: root.exit_protocol()
+                    background_normal: ''
+                    background_color: 1,0,0
+
