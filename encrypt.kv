@@ -1,25 +1,36 @@
 Encrypt:
 #:set font_size dp(24)
 <Encrypt>:
+
     password: pwd.text
-    canvas.before:
-        Rectangle:
-            source : 'images/bg1.jpeg'
-            size : self.size
+    #canvas.before:
+        #Rectangle:
+            #source : 'images/bg1.jpeg'
+            #size : self.size
 
     BoxLayout:
         orientation: 'vertical'
-        Button:
+        Label:
+            canvas.before:
+                Color:
+                    rgb:  .7,.7,.9
+                Rectangle:
+                    size: self.size
+                    pos : self.pos
             size_hint: 1,.2
             text: 'E N C R Y P T    P D F    F I L E'
             font_size: font_size
             font_name: 'fonts/Sackers-Gothic-Std-Light.ttf'
-            background_normal : ""
-            background_color : .7,.7,.9
 
         BoxLayout:
             FileBrowser:
                 id: f
+                canvas.before:
+                    Color:
+                        rgb:  0, .5,.5
+                    Rectangle:
+                        size: self.size
+                        pos : self.pos
                 on_success: root.select_file(self)
                 #on_canceled : root.selection_cancelled(self)
                 select_string: 'Select'
@@ -27,18 +38,26 @@ Encrypt:
                 on_submit: root.select_file(self)
                 disabled: root.file_select_disabled
                 filters:  ['*.pdf','']
+                favorites: [(root.user_path, 'Pdfs')]
 
 
         BoxLayout:
             orientation: 'vertical'
+            size_hint: 1,.5
             BoxLayout:
-                Button:
+                Label:
+                    id: slf
+                    canvas.before:
+                        Color:
+                            rgb:  0, .4,.2
+                        Rectangle:
+                            size: self.size
+                            pos : self.pos
                     size_hint: 1,1
                     text: root.selected_file
                     font_size: font_size
                     font_name: 'fonts/Eurostile.ttf'
-                    background_normal : ""
-                    background_color : .7,.7,.9
+
                     disabled : root.display_select_button
                 Button:
                     size_hint: .2,1
@@ -76,6 +95,17 @@ Encrypt:
                     background_color: 0.2,0.5,1
                     disabled: root.encryption_button_disabled
                     on_press : root.encrypt_file(self)
+                Label:
+                    canvas.before:
+                        Color:
+                            rgb:  0, .6,.6
+                        Rectangle:
+                            size: self.size
+                            pos : self.pos
+                    text: root.count_files_encrypted
+                    font_name: 'fonts/Sackers-Gothic-Std-Light.ttf'
+                    font_size: font_size
+
                 Button:
                     #size_hint: .7,1
                     font_size: font_size
@@ -84,4 +114,6 @@ Encrypt:
                     on_press: root.exit_protocol()
                     background_normal: ''
                     background_color: 1,0,0
+
+
 

@@ -1,7 +1,9 @@
 import os
 import sys
+from os.path import dirname, expanduser, sep
 
 from PyPDF2 import PdfFileReader, PdfFileWriter
+from kivy import platform
 from kivy.app import App
 from kivy.properties import StringProperty, BooleanProperty
 from kivy.uix.label import Label
@@ -22,20 +24,27 @@ class Encrypt(Screen):
     password = StringProperty()
     file_encrypt_button = StringProperty('Encrypt')
     change_file = StringProperty('Change file')
+    count_files_encrypted = StringProperty()
+    count = 0
+    user_path = StringProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        if platform == 'windows':
+            self.user_path = dirname(expanduser('~')) + sep + 'Downloads'
+        else:
+            self.user_path = expanduser('~') + sep + 'Downloads'
 
     def select_file(self, instance):
         self.file = '.'.join(instance.selection)
         if self.file.endswith('.pdf'):
             self.selected_file = 'Selected file :' + os.path.basename(self.file)
-            self.focus_text = True
-            self.file_select_disabled = True
+            # self.file_select_disabled = True
             self.encryption_button_disabled = False
             self.password_input_disabled = False
             self.change_file_button = False
             self.display_select_button = False
+            self.focus_text = True
         else:
             self.selected_file = "Please select a file with '.pdf ' extension."
             self.display_select_button = False
@@ -71,8 +80,12 @@ class Encrypt(Screen):
             filename = os.path.join('Encrypted files', file_basename)
             with open(filename, 'wb') as f:
                 new_file.write(f)
-            self.file_encrypt_button = "File encrypted"
-            self.change_file = "Encrypt another file"
+            # self.file_encrypt_button = "File encrypted"
+            # self.change_file = "Encrypt another file"
+            # self.file_select_disabled = False
+            self.count += 1
+            self.count_files_encrypted = 'ENCRYPTED FILES: ' + str(self.count)
+            self.enable_select_file()
 
         else:
             popup = Popup(title='Password',
