@@ -38,7 +38,7 @@ class Encrypt(Screen):
     def select_file(self, instance):
         self.file = '.'.join(instance.selection)
         if self.file.endswith('.pdf'):
-            self.selected_file = 'Selected file :' + os.path.basename(self.file)
+            self.selected_file = 'Selected file : ' + os.path.basename(self.file)
             # self.file_select_disabled = True
             self.encryption_button_disabled = False
             self.password_input_disabled = False
