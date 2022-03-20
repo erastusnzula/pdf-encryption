@@ -1,3 +1,9 @@
+"""
+Author: Erastus Nzula
+License: MIT
+Contribution : Open
+"""
+
 import os
 import sys
 from os.path import dirname, expanduser, sep
@@ -13,6 +19,7 @@ from kivy_garden.filebrowser import FileBrowser
 
 
 class Encrypt(Screen):
+    """A class to hold encryption methods."""
     file = None
     selected_file = StringProperty('< No file selected >')
     focus_text = BooleanProperty(False)
@@ -36,10 +43,13 @@ class Encrypt(Screen):
             self.user_path = expanduser('~') + sep + 'Downloads'
 
     def select_file(self, instance):
+        """
+        :param instance: The select file button instance.
+        :return: selected file.
+        """
         self.file = '.'.join(instance.selection)
         if self.file.endswith('.pdf'):
             self.selected_file = 'Selected file : ' + os.path.basename(self.file)
-            # self.file_select_disabled = True
             self.encryption_button_disabled = False
             self.password_input_disabled = False
             self.change_file_button = False
@@ -54,6 +64,9 @@ class Encrypt(Screen):
             popup.open()
 
     def enable_select_file(self):
+        """
+        :return: None
+        """
         self.file_encrypt_button = 'Encrypt'
         self.file_select_disabled = False
         self.selected_file = '< No file selected >'
@@ -63,9 +76,12 @@ class Encrypt(Screen):
         self.encryption_button_disabled = True
         self.change_file = "Change file"
 
-    def encrypt_file(self, instance):
+    def encrypt_file(self):
+        """
+        :return: the encrypted file.
+        """
         if self.password:
-            file = PdfFileReader(self.file)  # Read the file.
+            file = PdfFileReader(self.file)
             new_file = PdfFileWriter()
             pages = file.getNumPages()
             for page in range(pages):
@@ -80,9 +96,6 @@ class Encrypt(Screen):
             filename = os.path.join('Encrypted files', file_basename)
             with open(filename, 'wb') as f:
                 new_file.write(f)
-            # self.file_encrypt_button = "File encrypted"
-            # self.change_file = "Encrypt another file"
-            # self.file_select_disabled = False
             self.count += 1
             self.count_files_encrypted = 'ENCRYPTED FILES: ' + str(self.count)
             self.enable_select_file()
@@ -95,11 +108,18 @@ class Encrypt(Screen):
 
     @staticmethod
     def exit_protocol():
+        """
+        :return: None
+        """
         sys.exit()
 
 
 class EncryptApp(App):
+    """The main calling class."""
     def build(self):
+        """
+        :return: screen
+        """
         screen = ScreenManager(transition=WipeTransition())
         screen.add_widget(Encrypt(name='password'))
         return screen
