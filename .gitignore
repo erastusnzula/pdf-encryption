@@ -2,3 +2,6 @@
 __Pycache__
 Encrypted files
 kv.kv
+adb.exe
+AdbWinApi.dll
+AdbWinUsbApi.dll
